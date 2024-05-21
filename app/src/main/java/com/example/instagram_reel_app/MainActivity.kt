@@ -37,27 +37,43 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onVideoClick(position: Int) {
-                isAudioMuted = !isAudioMuted
-
                 val index =
                     exoPlayerItems.indexOfFirst { it.position == binding.viewPager2.currentItem }
                 if (index != -1) {
                     val player = exoPlayerItems[index].exoPlayer
-                    player.volume = if (isAudioMuted) 0f else 1f
+                    val item = exoPlayerItems[index]
+                    item.paused = !item.paused
+                    if (item.paused){
+                        player.pause()
+                    }else{
+                        player.play()
+                    }
                 }
 
-                if (isAudioMuted) {
-                    binding.ivSpeaker.setImageResource(R.drawable.speaker_muted)
-                } else {
-                    binding.ivSpeaker.setImageResource(R.drawable.speaker_normal)
-                }
-
-                binding.ivSpeaker.visibility = View.VISIBLE
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.ivSpeaker.visibility = View.GONE
-                }, 1000)
             }
         })
+
+        binding.volume.setOnClickListener {
+            isAudioMuted = !isAudioMuted
+
+            val index =
+                exoPlayerItems.indexOfFirst { it.position == binding.viewPager2.currentItem }
+            if (index != -1) {
+                val player = exoPlayerItems[index].exoPlayer
+                player.volume = if (isAudioMuted) 0f else 1f
+            }
+
+            if (isAudioMuted) {
+                binding.ivSpeaker.setImageResource(R.drawable.speaker_muted)
+            } else {
+                binding.ivSpeaker.setImageResource(R.drawable.speaker_normal)
+            }
+
+            binding.ivSpeaker.visibility = View.VISIBLE
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.ivSpeaker.visibility = View.GONE
+            }, 1000)
+        }
 
         binding.viewPager2.adapter = adapter
 

@@ -4,5 +4,6 @@ import com.google.android.exoplayer2.ExoPlayer
 
 data class ExoplayerItem(
     var exoPlayer: ExoPlayer,
-    var position: Int
+    var position: Int,
+    var paused:Boolean = false
 )
